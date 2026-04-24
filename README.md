@@ -1,5 +1,7 @@
 # SafeSignal
 
+Originally created for a hackathon (Swarm-Agents): family coordination and agent-assisted workflows with human approval.
+
 **SafeSignal** is a family-focused wildfire response MVP built as a [Next.js](https://nextjs.org/) web app. It helps households monitor an incident, see **source-backed** information, coordinate **who is safe and who needs help**, and run **human-approved** agent-assisted actions—including optional **voice check-ins** via [Vapi](https://vapi.ai/).
 
 It is **not** an emergency service. For immediate danger, use **911** or your local emergency number.

@@ -1,0 +1,125 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e7]
+        - generic [ref=e9]:
+          - heading "SafeSignal" [level=1] [ref=e10]
+          - paragraph [ref=e11]: Demo fallback · Approval gated
+      - generic [ref=e12]:
+        - generic [ref=e13]: Loading
+        - button "Start Monitor" [ref=e14]:
+          - img [ref=e15]
+          - text: Start Monitor
+  - main [ref=e17]:
+    - generic [ref=e18]: SafeSignal provides source-backed emergency planning only. If anyone is in immediate danger, call 911 or your local emergency service. Resource availability and road conditions can change quickly.
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - img [ref=e21]
+        - text: Household Onboarding
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - img [ref=e28]
+          - text: Household Profile
+        - generic [ref=e33]:
+          - textbox "Household name" [ref=e34]: Rivera Household
+          - textbox "Home address" [ref=e35]: Fictional address near Santa Rosa, CA
+          - textbox "Region" [ref=e36]: Sonoma County, California
+          - textbox "Supplies" [ref=e37]: go bag, N95 masks, battery pack
+          - textbox "Pets" [ref=e38]: Leo - dog
+          - textbox "Vehicles" [ref=e39]: Blue SUV
+          - textbox "Medical dependencies" [ref=e40]: portable oxygen battery
+          - textbox "Accessibility notes" [ref=e41]: Wheelchair access needed.
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - textbox "Member name" [ref=e44]: Sarah (Mom)
+            - textbox "Role" [ref=e45]: Parent
+            - textbox "Location" [ref=e46]: Work - Downtown Santa Rosa
+            - textbox "Needs" [ref=e47]
+            - textbox "Contact method" [ref=e48]: Vapi call + SMS
+            - textbox "Phone" [ref=e49]: "+15555550101"
+            - generic [ref=e50]:
+              - checkbox "Voice opt-in" [checked] [ref=e51]
+              - text: Voice opt-in
+          - generic [ref=e52]:
+            - textbox "Member name" [ref=e53]: Mark (Dad)
+            - textbox "Role" [ref=e54]: Parent
+            - textbox "Location" [ref=e55]: North Campus
+            - textbox "Needs" [ref=e56]: wheelchair access
+            - textbox "Contact method" [ref=e57]: Vapi call
+            - textbox "Phone" [ref=e58]: "+15555550102"
+            - generic [ref=e59]:
+              - checkbox "Voice opt-in" [checked] [ref=e60]
+              - text: Voice opt-in
+          - generic [ref=e61]:
+            - textbox "Member name" [ref=e62]
+            - textbox "Role" [ref=e63]
+            - textbox "Location" [ref=e64]
+            - textbox "Needs" [ref=e65]
+            - textbox "Contact method" [ref=e66]
+            - textbox "Phone" [ref=e67]
+            - generic [ref=e68]:
+              - checkbox "Voice opt-in" [ref=e69]
+              - text: Voice opt-in
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - checkbox "Owner consents to approved outbound emergency calls" [checked] [ref=e72]
+            - text: Owner consents to approved outbound emergency calls
+          - button "Save profile" [ref=e73]:
+            - img [ref=e74]
+            - text: Save profile
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - img [ref=e81]
+          - text: Live Incident Map
+        - generic [ref=e84]: Loading Map...
+      - generic [ref=e86]:
+        - img [ref=e87]
+        - text: Action Timeline
+    - generic [ref=e91]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - text: Voice Command Center
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - img [ref=e103]
+                - text: State
+              - generic [ref=e109]: idle
+            - generic [ref=e110]:
+              - generic [ref=e111]:
+                - img [ref=e112]
+                - text: Pending
+              - generic [ref=e116]: "0"
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - img [ref=e119]
+                - text: Calls
+              - generic [ref=e123]: "0"
+          - button "Start web voice" [ref=e124]:
+            - img [ref=e125]
+            - text: Start web voice
+          - generic [ref=e128]: Voice guidance is source-backed only. For immediate danger, call 911 or your local emergency line.
+          - generic [ref=e129]:
+            - generic [ref=e130]: Unresolved check-ins
+            - generic [ref=e131]: No unresolved members
+          - generic [ref=e133]: Recent transcripts
+      - generic [ref=e135]:
+        - img [ref=e136]
+        - text: Family Status Board
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - img [ref=e142]
+          - text: Approval Queue
+        - generic [ref=e146]: Agent will propose actions here
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - img [ref=e149]
+          - text: Local Resources
+        - generic [ref=e152]: Waiting for monitor...
+      - generic [ref=e154]:
+        - img [ref=e155]
+        - text: Proof Vault

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "tinyfish": {
+      "url": "https://agent.tinyfish.ai/mcp"
+    },
+    "vapi-docs": {
+      "command": "npx",
+      "args": ["@vapi-ai/mcp-server"]
+    }
+  }
+}

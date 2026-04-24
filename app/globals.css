@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Explicit scan roots so Tailwind v4 always generates utilities for the app (avoids “no CSS” when detection misses files). */
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../lib/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../hooks/**/*.{js,ts,jsx,tsx,mdx}";

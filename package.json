@@ -1,0 +1,18 @@
+{
+  "name": "swarm-agents",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent marketplace platform - Guild.ai agent templates and infrastructure",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "zod": "^3.23.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

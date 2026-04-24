@@ -1,0 +1,19 @@
+# Guild.ai Configuration
+# This file configures the Guild CLI for the agent marketplace project.
+# See: https://docs.guild.ai
+
+# Project metadata
+project:
+  name: swarm-agents
+  description: Agent marketplace platform powered by Deep Agents + Guild.ai
+
+# Agent defaults
+agents:
+  # Default directory for generated agents
+  output_dir: src/agents/generated
+  # Default template to use
+  default_template: llm-agent
+
+# Workspace configuration
+workspace:
+  name: agent-marketplace

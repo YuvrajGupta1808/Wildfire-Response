@@ -1,0 +1,41 @@
+# Cosmo Router configuration for local development
+# Docs: https://cosmo-docs.wundergraph.com/router/configuration
+
+version: "1"
+
+graph:
+  # Token not needed in DEV_MODE - set via env var for production
+  token: "${GRAPH_API_TOKEN}"
+
+# Enable GraphQL Playground for local dev
+playground:
+  enabled: true
+  path: "/graphql"
+
+# Enable introspection for development
+introspection:
+  enabled: true
+
+# Logging
+log_level: "info"
+
+# CORS for local development
+cors:
+  allow_origins:
+    - "http://localhost:*"
+  allow_methods:
+    - "GET"
+    - "POST"
+    - "OPTIONS"
+  allow_headers:
+    - "Content-Type"
+    - "Authorization"
+  allow_credentials: true
+
+# MCP Gateway (for AI agent integration)
+# Uncomment when ready to expose GraphQL operations as MCP tools
+# mcp:
+#   enabled: true
+#   operations_dir: "./operations"
+#   expose_schema: true
+#   enable_arbitrary_operations: false

@@ -1,0 +1,61 @@
+# Marketplace Subgraph — Agent discovery and browsing
+# Federation 2 directives
+
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@key", "@shareable", "@external"])
+
+type Query {
+  """List all available agents in the marketplace."""
+  availableAgents(
+    """Filter by category (e.g., 'monitoring', 'automation')."""
+    category: String
+    """Maximum number of results to return."""
+    limit: Int = 20
+    """Offset for pagination."""
+    offset: Int = 0
+  ): [MarketplaceAgent!]!
+
+  """Search agents by keyword or description."""
+  searchAgents(query: String!): [MarketplaceAgent!]!
+
+  """Get a single agent by its unique ID."""
+  agent(id: ID!): MarketplaceAgent
+}
+
+"""An agent listed in the marketplace."""
+type MarketplaceAgent @key(fields: "id") {
+  """Unique agent identifier."""
+  id: ID!
+  """Human-readable name."""
+  name: String!
+  """What the agent does."""
+  description: String!
+  """Agent type: llmAgent or codedAgent."""
+  agentType: AgentType!
+  """Category for browsing (e.g., 'monitoring', 'data-processing')."""
+  category: String
+  """Average user rating (1-5)."""
+  rating: Float
+  """Number of times this agent has been executed."""
+  executionCount: Int!
+  """Guild.ai services this agent uses."""
+  servicesUsed: [String!]!
+  """When the agent was first published."""
+  createdAt: String!
+  """When the agent was last updated."""
+  updatedAt: String!
+  """Current publication status."""
+  status: AgentStatus!
+}
+
+enum AgentType {
+  LLM_AGENT
+  CODED_AGENT
+}
+
+enum AgentStatus {
+  ACTIVE
+  DEPRECATED
+  DRAFT
+  DISABLED
+}

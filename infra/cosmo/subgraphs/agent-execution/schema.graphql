@@ -1,0 +1,67 @@
+# Agent Execution Subgraph — Running agents and viewing results
+# Federation 2 directives
+
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@key", "@shareable", "@external"])
+
+"""Extends MarketplaceAgent with execution capabilities."""
+type MarketplaceAgent @key(fields: "id") {
+  id: ID! @external
+  """Recent executions of this agent."""
+  executions(limit: Int = 10): [AgentExecution!]!
+  """Current live status of the agent runtime."""
+  runtimeStatus: RuntimeStatus!
+}
+
+type Query {
+  """Get a specific execution by ID."""
+  execution(id: ID!): AgentExecution
+
+  """List recent executions across all agents."""
+  recentExecutions(limit: Int = 20): [AgentExecution!]!
+}
+
+type Mutation {
+  """Execute an agent with the given input."""
+  executeAgent(agentId: ID!, input: String!): AgentExecution!
+
+  """Cancel a running execution."""
+  cancelExecution(executionId: ID!): AgentExecution!
+}
+
+"""A single agent execution record."""
+type AgentExecution {
+  """Unique execution identifier."""
+  id: ID!
+  """ID of the agent that was executed."""
+  agentId: ID!
+  """Current execution status."""
+  status: ExecutionStatus!
+  """JSON-encoded input provided to the agent."""
+  input: String!
+  """JSON-encoded output from the agent (null if still running)."""
+  output: String
+  """When execution started."""
+  startedAt: String!
+  """When execution completed (null if still running)."""
+  completedAt: String
+  """Execution duration in milliseconds."""
+  durationMs: Int
+  """Error message if execution failed."""
+  error: String
+}
+
+enum ExecutionStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum RuntimeStatus {
+  READY
+  BUSY
+  OFFLINE
+  ERROR
+}

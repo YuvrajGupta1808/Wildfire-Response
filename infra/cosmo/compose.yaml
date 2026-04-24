@@ -1,0 +1,21 @@
+# WunderGraph Cosmo local composition config
+# Used by: wgc router compose --input compose.yaml --out config.json
+#
+# This defines the subgraphs that make up the federated supergraph.
+# Each subgraph has a name, routing URL, and schema file.
+#
+# Usage:
+#   npx wgc@latest router compose --input compose.yaml --out config.json
+
+version: 1
+
+subgraphs:
+  - name: marketplace
+    routing_url: http://marketplace-subgraph:4001/graphql
+    schema:
+      file: ./subgraphs/marketplace/schema.graphql
+
+  - name: agent-execution
+    routing_url: http://agent-execution-subgraph:4002/graphql
+    schema:
+      file: ./subgraphs/agent-execution/schema.graphql

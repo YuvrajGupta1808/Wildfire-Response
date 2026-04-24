@@ -17,6 +17,12 @@ class Settings:
     # Guild.ai uses browser-based OAuth via `guild auth login` (no API key needed).
     # Auth state is managed by the Guild CLI automatically.
 
+    # WunderGraph Cosmo settings
+    cosmo_router_url: str = "http://localhost:3002/graphql"
+    cosmo_router_port: int = 3002
+    cosmo_infra_dir: str = "infra/cosmo"
+    cosmo_subgraphs_base_port: int = 4001
+
     @classmethod
     def from_env(cls) -> "Settings":
         """Load settings from environment variables (and .env file if present)."""
@@ -30,6 +36,14 @@ class Settings:
             ),
             fireworks_base_url=os.getenv(
                 "FIREWORKS_BASE_URL", "https://api.fireworks.ai/inference/v1"
+            ),
+            cosmo_router_url=os.getenv(
+                "COSMO_ROUTER_URL", "http://localhost:3002/graphql"
+            ),
+            cosmo_router_port=int(os.getenv("COSMO_ROUTER_PORT", "3002")),
+            cosmo_infra_dir=os.getenv("COSMO_INFRA_DIR", "infra/cosmo"),
+            cosmo_subgraphs_base_port=int(
+                os.getenv("COSMO_SUBGRAPHS_BASE_PORT", "4001")
             ),
         )
 

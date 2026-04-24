@@ -1,0 +1,66 @@
+# WunderGraph Cosmo - Local Development Setup
+# Uses standalone Router with local composition (no controlplane needed)
+#
+# Usage:
+#   1. First compose the supergraph: wgc router compose --input compose.yaml --out config.json
+#   2. Then start: docker-compose up -d
+#   3. GraphQL endpoint: http://localhost:3002/graphql
+#   4. Health check: http://localhost:3002/health
+
+version: "3.8"
+
+services:
+  cosmo-router:
+    image: ghcr.io/wundergraph/cosmo/router:latest
+    container_name: cosmo-router
+    ports:
+      - "3002:3002"
+    environment:
+      - DEV_MODE=true
+      - LISTEN_ADDR=0.0.0.0:3002
+      - EXECUTION_CONFIG_FILE_PATH=/config/config.json
+      - LOG_LEVEL=info
+      - PLAYGROUND_ENABLED=true
+      - INTROSPECTION_ENABLED=true
+      - GRAPH_API_TOKEN=""
+    volumes:
+      - ./config.json:/config/config.json:ro
+      - ./router.yaml:/config/router.yaml:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # Mock subgraph servers for local development
+  # In production, these would be real Guild.ai agent endpoints
+  marketplace-subgraph:
+    image: node:20-alpine
+    container_name: marketplace-subgraph
+    working_dir: /app
+    volumes:
+      - ./subgraphs/marketplace:/app
+    command: ["node", "server.mjs"]
+    ports:
+      - "4001:4001"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  agent-execution-subgraph:
+    image: node:20-alpine
+    container_name: agent-execution-subgraph
+    working_dir: /app
+    volumes:
+      - ./subgraphs/agent-execution:/app
+    command: ["node", "server.mjs"]
+    ports:
+      - "4002:4002"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

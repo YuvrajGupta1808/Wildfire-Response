@@ -14,7 +14,8 @@ class Settings:
     fireworks_api_key: str = ""
     fireworks_model: str = "accounts/fireworks/models/glm-5p1"
     fireworks_base_url: str = "https://api.fireworks.ai/inference/v1"
-    guild_api_key: str = ""
+    # Guild.ai uses browser-based OAuth via `guild auth login` (no API key needed).
+    # Auth state is managed by the Guild CLI automatically.
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -30,7 +31,6 @@ class Settings:
             fireworks_base_url=os.getenv(
                 "FIREWORKS_BASE_URL", "https://api.fireworks.ai/inference/v1"
             ),
-            guild_api_key=os.getenv("GUILD_API_KEY", ""),
         )
 
 

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createDemoDashboardData } from '@/lib/demo-data';
 import { DashboardData, FamilyMemberStatus, HouseholdInput } from '@/lib/types';
 
 interface AppState extends DashboardData {
@@ -34,6 +35,31 @@ const emptyDashboard: DashboardData = {
 
 const AppContext = createContext<AppState | undefined>(undefined);
 
+/** Avoid putting full HTML error pages (or huge bodies) into UI `error` state. */
+function summarizeFailedResponseBody(status: number, text: string): string {
+  const trimmed = text.trim();
+  const sniff = trimmed.slice(0, 80).toLowerCase().replace(/^\uFEFF/, '');
+  if (sniff.startsWith('<!doctype') || sniff.startsWith('<html')) {
+    return `HTTP ${status}: the server returned an HTML page instead of JSON. Check the API route, deployment, and server logs.`;
+  }
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      const j = JSON.parse(trimmed) as { error?: string; message?: string };
+      const msg = j.error ?? j.message;
+      if (typeof msg === 'string' && msg.trim()) {
+        return `HTTP ${status}: ${msg.trim()}`;
+      }
+    } catch {
+      /* fall through */
+    }
+  }
+  const oneLine = trimmed.replace(/\s+/g, ' ').trim();
+  const max = 320;
+  if (!oneLine) return `Request failed (${status})`;
+  if (oneLine.length <= max) return `HTTP ${status}: ${oneLine}`;
+  return `HTTP ${status}: ${oneLine.slice(0, max)}…`;
+}
+
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...init,
@@ -43,8 +69,9 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
     },
   });
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(text || `Request failed: ${response.status}`);
+    const raw = await response.text();
+    const text = raw.length > 48_000 ? `${raw.slice(0, 48_000)}…` : raw;
+    throw new Error(summarizeFailedResponseBody(response.status, text));
   }
   return response.json() as Promise<T>;
 }
@@ -64,7 +91,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       applyData(await fetchJson<DashboardData>('/api/dashboard'));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to load dashboard');
+      const message = err instanceof Error ? err.message : 'Unable to load dashboard';
+      // Keep the UI usable: emptyDashboard leaves lists/maps looking blank with no explanation.
+      setData(createDemoDashboardData());
+      setError(message);
     } finally {
       setLoading(false);
     }

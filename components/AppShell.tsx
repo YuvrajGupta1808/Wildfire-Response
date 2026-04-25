@@ -15,7 +15,7 @@ const navItems = [
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { mode, incident, household, refreshIncident, startMonitoring, isMonitoring } = useAppStore();
+  const { mode, incident, household, refreshIncident, startMonitoring, isMonitoring, error, reload } = useAppStore();
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-stone-950">
@@ -97,6 +97,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
             </div>
+
+            {error ? (
+              <div className="mt-3 flex flex-col gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-950 md:flex-row md:items-center md:justify-between">
+                <span className="min-w-0 max-w-full md:max-w-[min(100%,56rem)]">
+                  <span className="font-semibold">Dashboard request failed.</span>{' '}
+                  <span className="break-words text-amber-900/90">
+                    Showing demo data until the server responds. {error}
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => void reload()}
+                  className="shrink-0 rounded-lg border border-amber-400 bg-white px-3 py-1.5 text-xs font-semibold text-amber-950 hover:bg-amber-100"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : null}
 
             <nav className="mt-4 flex gap-2 overflow-x-auto lg:hidden">
               {navItems.map((item) => {

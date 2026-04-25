@@ -1,18 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { ArrowRight, CheckCircle2, ListTodo, Route } from 'lucide-react';
+import ApprovalQueue from '@/components/ApprovalQueue';
 import AppShell from '@/components/AppShell';
+import ResourceCards from '@/components/ResourceCards';
 import { useAppStore } from '@/lib/store';
-
-const blockLoading = () => (
-  <div className="flex min-h-[120px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">
-    Loading…
-  </div>
-);
-
-const ApprovalQueue = dynamic(() => import('@/components/ApprovalQueue'), { ssr: false, loading: blockLoading });
-const ResourceCards = dynamic(() => import('@/components/ResourceCards'), { ssr: false, loading: blockLoading });
 
 export default function PlanPage() {
   const { nextActions, resources } = useAppStore();

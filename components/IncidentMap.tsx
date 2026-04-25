@@ -61,12 +61,13 @@ export default function IncidentMap() {
   });
 
   return (
-    <div className="absolute inset-0 w-full h-full [&_.maplibregl-popup-content]:bg-neutral-900 [&_.maplibregl-popup-content]:border [&_.maplibregl-popup-content]:border-white/10 [&_.maplibregl-popup-content]:p-0 [&_.maplibregl-popup-content]:rounded-xl [&_.maplibregl-popup-tip]:border-t-neutral-900">
+    <div className="absolute inset-0 min-h-0 w-full overflow-hidden [&_.maplibregl-canvas]:!outline-none [&_.maplibregl-map]:h-full [&_.maplibregl-map]:min-h-0 [&_.maplibregl-map]:w-full [&_.maplibregl-popup-content]:rounded-xl [&_.maplibregl-popup-content]:border [&_.maplibregl-popup-content]:border-white/10 [&_.maplibregl-popup-content]:bg-neutral-900 [&_.maplibregl-popup-content]:p-0 [&_.maplibregl-popup-tip]:border-t-neutral-900">
       <Map
         {...viewState}
         onMove={evt => setViewState(evt.viewState)}
         mapStyle={MAP_STYLE}
         attributionControl={false}
+        style={{ width: '100%', height: '100%', minHeight: 0 }}
       >
         <NavigationControl position="bottom-right" />
         

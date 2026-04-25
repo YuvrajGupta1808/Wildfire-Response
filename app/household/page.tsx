@@ -1,18 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { Database } from 'lucide-react';
 import AppShell from '@/components/AppShell';
+import FamilyBoard from '@/components/FamilyBoard';
+import HouseholdOnboarding from '@/components/HouseholdOnboarding';
 import { useAppStore } from '@/lib/store';
-
-const blockLoading = () => (
-  <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">
-    Loading…
-  </div>
-);
-
-const HouseholdOnboarding = dynamic(() => import('@/components/HouseholdOnboarding'), { ssr: false, loading: blockLoading });
-const FamilyBoard = dynamic(() => import('@/components/FamilyBoard'), { ssr: false, loading: blockLoading });
 
 export default function HouseholdPage() {
   const { household } = useAppStore();

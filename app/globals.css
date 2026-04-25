@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Explicit scan roots so Tailwind v4 always generates utilities for the app (avoids “no CSS” when detection misses files). */
 @source "./**/*.{js,ts,jsx,tsx,mdx}";

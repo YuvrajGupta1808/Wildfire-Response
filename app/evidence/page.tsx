@@ -1,18 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { History, ShieldCheck } from 'lucide-react';
 import AppShell from '@/components/AppShell';
+import ActionTimeline from '@/components/ActionTimeline';
+import ProofVault from '@/components/ProofVault';
 import { useAppStore } from '@/lib/store';
-
-const blockLoading = () => (
-  <div className="flex min-h-[120px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">
-    Loading…
-  </div>
-);
-
-const ProofVault = dynamic(() => import('@/components/ProofVault'), { ssr: false, loading: blockLoading });
-const ActionTimeline = dynamic(() => import('@/components/ActionTimeline'), { ssr: false, loading: blockLoading });
 
 export default function EvidencePage() {
   const { auditEvents } = useAppStore();
@@ -24,8 +16,8 @@ export default function EvidencePage() {
           <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-stone-500">Evidence</div>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-stone-950">Proof packet and audit trail</h2>
         </div>
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
-        <section className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
+      <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
+        <section className="min-w-0 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2 text-sm font-semibold text-stone-800">
             <ShieldCheck className="h-4 w-4 text-emerald-700" />
             Proof Vault
@@ -33,7 +25,7 @@ export default function EvidencePage() {
           <ProofVault />
         </section>
 
-        <section className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
+        <section className="min-w-0 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2 text-sm font-semibold text-stone-800">
             <History className="h-4 w-4 text-stone-600" />
             Audit Events
@@ -52,7 +44,7 @@ export default function EvidencePage() {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm xl:col-span-2">
+        <section className="min-w-0 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm xl:col-span-2">
           <div className="mb-5 text-sm font-semibold text-stone-800">Timeline</div>
           <ActionTimeline />
         </section>

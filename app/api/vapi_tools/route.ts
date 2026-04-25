@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDashboardData, recordMemberCheckIn, startMonitor } from '@/lib/runtime-store';
+import { recordMemberCheckIn } from '@/lib/runtime-store';
+import { getServerDashboardSnapshot, syncRuntimeStoreFromPrimary } from '@/lib/server-dashboard';
+import { persistDashboardToInsForge } from '@/lib/services/insforge-persist';
+import { runWildfireMonitorWithTinyFish } from '@/lib/services/wildfire-monitor';
 import { FamilyMemberStatus } from '@/lib/types';
 
 type ToolCallItem = { id: string; name: string; arguments?: Record<string, unknown> };
@@ -16,12 +19,13 @@ function isFamilyMemberStatus(value: unknown): value is FamilyMemberStatus {
 
 async function executeToolByName(name: string, args: Record<string, unknown>) {
   const normalized = name.replace(/-/g, '_').toLowerCase();
-  const dash = getDashboardData();
 
   switch (normalized) {
     case 'get_household_status':
-    case 'safe_signal_get_household_status':
+    case 'safe_signal_get_household_status': {
+      const dash = await getServerDashboardSnapshot();
       return { household: dash.household, members: dash.members, incident: dash.incident };
+    }
     case 'record_member_checkin':
     case 'safe_signal_record_member_checkin': {
       const memberId = typeof args.memberId === 'string' ? args.memberId : undefined;
@@ -30,19 +34,24 @@ async function executeToolByName(name: string, args: Record<string, unknown>) {
       if (!memberId || !isFamilyMemberStatus(status)) {
         return { error: 'memberId and a valid status are required' };
       }
-      recordMemberCheckIn(memberId, status, locationNote);
+      await syncRuntimeStoreFromPrimary();
+      const data = recordMemberCheckIn(memberId, status, locationNote, 'vapi');
+      await persistDashboardToInsForge(data);
       return { ok: true, memberId, status };
     }
     case 'get_current_plan':
-    case 'safe_signal_get_current_plan':
+    case 'safe_signal_get_current_plan': {
+      const dash = await getServerDashboardSnapshot();
       return {
         nextActions: dash.nextActions,
         resources: dash.resources,
         sources: dash.sources,
       };
+    }
     case 'request_agent_refresh':
     case 'safe_signal_request_agent_refresh': {
-      const next = startMonitor();
+      const next = await runWildfireMonitorWithTinyFish();
+      await persistDashboardToInsForge(next);
       return {
         ok: true,
         incidentId: next.incident?.id,
@@ -75,25 +84,35 @@ export async function POST(request: NextRequest) {
   }
 
   switch (body.tool) {
-    case 'get_household_status':
+    case 'get_household_status': {
+      const dash = await getServerDashboardSnapshot();
       return NextResponse.json({
-        household: getDashboardData().household,
-        members: getDashboardData().members,
-        incident: getDashboardData().incident,
+        household: dash.household,
+        members: dash.members,
+        incident: dash.incident,
       });
+    }
     case 'record_member_checkin':
       if (!body.memberId || !body.status) {
         return NextResponse.json({ error: 'memberId and status are required' }, { status: 400 });
       }
-      return NextResponse.json(recordMemberCheckIn(body.memberId, body.status, body.locationNote));
-    case 'get_current_plan':
+      await syncRuntimeStoreFromPrimary();
+      const data = recordMemberCheckIn(body.memberId, body.status, body.locationNote, 'vapi');
+      await persistDashboardToInsForge(data);
+      return NextResponse.json(data);
+    case 'get_current_plan': {
+      const dash = await getServerDashboardSnapshot();
       return NextResponse.json({
-        nextActions: getDashboardData().nextActions,
-        resources: getDashboardData().resources,
-        sources: getDashboardData().sources,
+        nextActions: dash.nextActions,
+        resources: dash.resources,
+        sources: dash.sources,
       });
-    case 'request_agent_refresh':
-      return NextResponse.json(startMonitor());
+    }
+    case 'request_agent_refresh': {
+      const next = await runWildfireMonitorWithTinyFish();
+      await persistDashboardToInsForge(next);
+      return NextResponse.json(next);
+    }
     default:
       return NextResponse.json({ error: 'Unknown Vapi tool' }, { status: 400 });
   }

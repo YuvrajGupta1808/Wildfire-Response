@@ -4,6 +4,17 @@ Copy these into your **Vapi assistant** in the dashboard. Use the same assistant
 
 Set **Server URL** for tools and **Server URL** for webhooks to your deployed app (see `/voice` → “Vapi dashboard wiring”, or `APP_URL` + `/api/vapi_tools` and `/api/vapi_webhook`).
 
+### Cursor “Vapi MCP” vs your database
+
+The **Vapi MCP** in Cursor is a **documentation / API helper**. It does not connect to InsForge, your repo, or SafeSignal’s Postgres. It cannot read your household data.
+
+**Project context during a real call** comes only from:
+
+1. Your assistant’s **system prompt** and **first message** (static text you paste in the Vapi dashboard), and  
+2. **Tool calls** to your deployed app: `POST {APP_URL}/api/vapi_tools` — that route loads **InsForge** when `NEXT_PUBLIC_DEMO_MODE=false` and InsForge is configured (same conditions as live dashboard). Register the four tools in Vapi and point the tool server at that URL.
+
+If the assistant still sounds uninformed, confirm tools are enabled, URLs are reachable from Vapi’s servers (use a public `APP_URL`, not only `localhost`), and the assistant model is allowed to invoke tools.
+
 ---
 
 ## Model & behavior

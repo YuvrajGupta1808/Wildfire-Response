@@ -1,18 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { PhoneCall } from 'lucide-react';
 import AppShell from '@/components/AppShell';
+import VoiceCommandCenter from '@/components/VoiceCommandCenter';
 import { useAppStore } from '@/lib/store';
-
-const VoiceCommandCenter = dynamic(() => import('@/components/VoiceCommandCenter'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 text-sm text-stone-500">
-      Loading voice…
-    </div>
-  ),
-});
 
 export default function VoicePage() {
   const { voiceCalls } = useAppStore();

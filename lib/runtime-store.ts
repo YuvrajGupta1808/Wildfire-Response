@@ -65,6 +65,11 @@ export function getDashboardData(): DashboardData {
   return { ...dashboard, mode: demoMode ? 'demo' : 'live' };
 }
 
+/** Replaces in-memory dashboard (server). Used to align tool handlers with InsForge after a live load. */
+export function replaceRuntimeDashboard(next: DashboardData): void {
+  dashboard = { ...next };
+}
+
 export function saveHousehold(input: HouseholdInput): DashboardData {
   const createdAt = dashboard.household?.createdAt ?? now();
   const household: Household = {
@@ -388,7 +393,12 @@ export function rejectAction(id: string): DashboardData {
   return getDashboardData();
 }
 
-export function recordMemberCheckIn(memberId: string, status: FamilyMember['status'], locationNote?: string): DashboardData {
+export function recordMemberCheckIn(
+  memberId: string,
+  status: FamilyMember['status'],
+  locationNote?: string,
+  updatedBy: FamilyMember['updatedBy'] = 'user',
+): DashboardData {
   dashboard.members = dashboard.members.map((member) =>
     member.id === memberId
       ? {
@@ -396,7 +406,7 @@ export function recordMemberCheckIn(memberId: string, status: FamilyMember['stat
           status,
           locationNote: locationNote ?? member.locationNote,
           lastCheckIn: now(),
-          updatedBy: 'user',
+          updatedBy,
         }
       : member,
   );
